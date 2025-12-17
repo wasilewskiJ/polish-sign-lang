@@ -1,0 +1,48 @@
+[project]
+name = "pjm2jp"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "raczu",email = "raczu+contact@protonmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "opencv-python (>=4.11.0.86,<5.0.0.0)",
+    "mediapipe (>=0.10.21,<0.11.0)",
+    "tensorflow (>=2.18,<2.19)",
+    "fastapi (>=0.115.11,<0.116.0)",
+    "websockets (>=15.0.1,<16.0.0)",
+    "uvicorn (>=0.34.0,<0.35.0)",
+    "typer (>=0.15.2,<0.16.0)",
+    "scikit-learn (>=1.6.1,<2.0.0)",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["app", "translator"]
+
+[tool.ruff.lint]
+select = ["B", "C", "E", "F", "I", "PIE", "W", "TID"]
+
+[tool.poetry.scripts]
+pjm2jp-app = "app.main:main"
+pjm2jp-translator = "translator.cli:app"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+ruff = "^0.11.13"
+
+[tool.poetry]
+packages = [
+    { include = "app" },
+    { include = "translator" }
+]
