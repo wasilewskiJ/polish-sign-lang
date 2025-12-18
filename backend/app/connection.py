@@ -97,7 +97,9 @@ class ConnectionManager:
         self.consumers.discard(websocket)
         logger.debug("Consumer disconnected (%s)", fmtaddress(websocket.client))
 
-    async def disconnect(self, websocket: WebSocket, code: int = 1000, reason: str = "bb") -> None:
+    async def disconnect(
+        self, websocket: WebSocket, code: int = 1000, reason: str = "bb"
+    ) -> None:
         with contextlib.suppress(WebSocketException):
             await websocket.close(code=code, reason=reason)
         self.remove(websocket)
@@ -106,4 +108,6 @@ class ConnectionManager:
         if not self.consumers:
             logging.warning("No consumers connected, skipping broadcast")
             return
-        await asyncio.gather(*(consumer.send_text(message) for consumer in self.consumers))
+        await asyncio.gather(
+            *(consumer.send_text(message) for consumer in self.consumers)
+        )

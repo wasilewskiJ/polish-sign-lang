@@ -73,12 +73,17 @@ def compute_landmark_relationships(detection_result) -> np.ndarray:
         landmarks = detection_result
     else:
         # Check if detection_result is a HandLandmarkerResult object
-        if not hasattr(detection_result, "hand_landmarks") or not detection_result.hand_landmarks:
+        if (
+            not hasattr(detection_result, "hand_landmarks")
+            or not detection_result.hand_landmarks
+        ):
             raise ValueError("No hands detected in the provided detection result")
 
         # Extract landmarks from the first detected hand
         hand_landmarks = detection_result.hand_landmarks[0]  # First detected hand
-        landmarks = [[landmark.x, landmark.y, landmark.z] for landmark in hand_landmarks]
+        landmarks = [
+            [landmark.x, landmark.y, landmark.z] for landmark in hand_landmarks
+        ]
 
     # Ensure we have exactly 21 landmarks
     if len(landmarks) != 21:
@@ -94,7 +99,9 @@ def compute_landmark_relationships(detection_result) -> np.ndarray:
     distances = []
     wrist = landmarks_array[0]  # Landmark 0 (wrist)
     fingertips = [landmarks_array[i] for i in [4, 8, 12, 16, 20]]  # Fingertips
-    palm_center = np.mean([landmarks_array[i] for i in [5, 9, 13, 17]], axis=0)  # Palm center
+    palm_center = np.mean(
+        [landmarks_array[i] for i in [5, 9, 13, 17]], axis=0
+    )  # Palm center
 
     # Wrist to fingertips (5 distances)
     for fingertip in fingertips:
@@ -155,7 +162,9 @@ def draw_landmarks_on_frame(rgb_image, detection_result):
         hand_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
         hand_landmarks_proto.landmark.extend(
             [
-                landmark_pb2.NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z)
+                landmark_pb2.NormalizedLandmark(
+                    x=landmark.x, y=landmark.y, z=landmark.z
+                )
                 for landmark in hand_landmarks
             ]
         )

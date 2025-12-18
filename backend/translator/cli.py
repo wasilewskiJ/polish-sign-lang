@@ -2,6 +2,7 @@
 import importlib.metadata
 import os
 import typer
+
 os.environ.setdefault("CUDA_VISIBLE_DEVICES", "-1")
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "3")
 os.environ.setdefault("TF_CPP_MAX_VLOG_LEVEL", "0")
@@ -13,9 +14,13 @@ app = typer.Typer(
     help="CLI tool for managing PJM Translator tasks, including dataset preparation, model training, and verification.",
     add_completion=False,
 )
-app.add_typer(model_app, name="model", help="Commands for training and verifying the model.")
+app.add_typer(
+    model_app, name="model", help="Commands for training and verifying the model."
+)
 app.add_typer(dataset_app, name="dataset", help="Commands for preparing the dataset.")
-app.add_typer(webcam_app, name="webcam", help="Commands for testing mediapipe with webcam.")
+app.add_typer(
+    webcam_app, name="webcam", help="Commands for testing mediapipe with webcam."
+)
 
 
 @app.command()

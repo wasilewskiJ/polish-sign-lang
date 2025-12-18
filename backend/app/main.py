@@ -8,7 +8,12 @@ from typing import AsyncGenerator
 import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
-from app.connection import ConnectionManager, ProducerAlreadyConnected, ProducerNotConnected, Status
+from app.connection import (
+    ConnectionManager,
+    ProducerAlreadyConnected,
+    ProducerNotConnected,
+    Status,
+)
 from app.evaluator import Evaluator
 
 logging.basicConfig(

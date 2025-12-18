@@ -30,7 +30,11 @@ def augment_image(image):
 
     # Scaling matrix around center
     T_scale = np.array(
-        [[scale, 0, center[0] * (1 - scale)], [0, scale, center[1] * (1 - scale)], [0, 0, 1]]
+        [
+            [scale, 0, center[0] * (1 - scale)],
+            [0, scale, center[1] * (1 - scale)],
+            [0, 0, 1],
+        ]
     )
 
     # Rotation matrix around center
@@ -38,7 +42,11 @@ def augment_image(image):
     sin_theta = np.sin(theta_rad)
     T_rotate = np.array(
         [
-            [cos_theta, -sin_theta, center[0] * (1 - cos_theta) + center[1] * sin_theta],
+            [
+                cos_theta,
+                -sin_theta,
+                center[0] * (1 - cos_theta) + center[1] * sin_theta,
+            ],
             [sin_theta, cos_theta, center[1] * (1 - cos_theta) - center[0] * sin_theta],
             [0, 0, 1],
         ]
@@ -53,7 +61,11 @@ def augment_image(image):
 
     # Apply affine transformation
     aug_img = cv2.warpAffine(
-        image, affine_matrix, (w, h), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE
+        image,
+        affine_matrix,
+        (w, h),
+        flags=cv2.INTER_LINEAR,
+        borderMode=cv2.BORDER_REPLICATE,
     )
 
     # Adjust brightness
@@ -63,7 +75,9 @@ def augment_image(image):
     return aug_img
 
 
-def process_dataset(raw_data_dir="data/raw", output_base_dir="data", num_augmentations=0):
+def process_dataset(
+    raw_data_dir="data/raw", output_base_dir="data", num_augmentations=0
+):
     """
     Process raw PJM images to extract hand landmarks and prepare train/val/test datasets with augmentation.
 
@@ -119,7 +133,10 @@ def process_dataset(raw_data_dir="data/raw", output_base_dir="data", num_augment
                 relationships = compute_landmark_relationships(detection_result)
                 hand_landmarks = detection_result.hand_landmarks[0]
                 raw_coordinates = np.array(
-                    [[landmark.x, landmark.y, landmark.z] for landmark in hand_landmarks]
+                    [
+                        [landmark.x, landmark.y, landmark.z]
+                        for landmark in hand_landmarks
+                    ]
                 ).flatten()
                 features = np.concatenate([raw_coordinates, relationships])
                 features_list.append(features)
@@ -138,7 +155,10 @@ def process_dataset(raw_data_dir="data/raw", output_base_dir="data", num_augment
                     relationships = compute_landmark_relationships(detection_result)
                     hand_landmarks = detection_result.hand_landmarks[0]
                     raw_coordinates = np.array(
-                        [[landmark.x, landmark.y, landmark.z] for landmark in hand_landmarks]
+                        [
+                            [landmark.x, landmark.y, landmark.z]
+                            for landmark in hand_landmarks
+                        ]
                     ).flatten()
                     features = np.concatenate([raw_coordinates, relationships])
                     features_list.append(features)

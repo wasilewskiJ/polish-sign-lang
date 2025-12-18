@@ -51,7 +51,8 @@ class Evaluator:
                 frame=frame,
                 letter=letter or "",
                 ensured=(
-                    len(self._classification_buffer) == self._classification_buffer.maxlen
+                    len(self._classification_buffer)
+                    == self._classification_buffer.maxlen
                     and all(item == letter for item in self._classification_buffer)
                 ),
             )

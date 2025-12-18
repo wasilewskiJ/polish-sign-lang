@@ -76,12 +76,16 @@ class PJMClassifier:
             [
                 tf.keras.layers.Input(shape=(input_shape,)),
                 tf.keras.layers.Dense(
-                    128, activation="relu", kernel_regularizer=tf.keras.regularizers.l2(0.005)
+                    128,
+                    activation="relu",
+                    kernel_regularizer=tf.keras.regularizers.l2(0.005),
                 ),
                 tf.keras.layers.BatchNormalization(),
                 tf.keras.layers.Dropout(0.3),
                 tf.keras.layers.Dense(
-                    64, activation="relu", kernel_regularizer=tf.keras.regularizers.l2(0.005)
+                    64,
+                    activation="relu",
+                    kernel_regularizer=tf.keras.regularizers.l2(0.005),
                 ),
                 tf.keras.layers.BatchNormalization(),
                 tf.keras.layers.Dropout(0.3),
@@ -92,11 +96,15 @@ class PJMClassifier:
         # Use default Adam learning rate with a scheduler
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
         model.compile(
-            optimizer=optimizer, loss="sparse_categorical_crossentropy", metrics=["accuracy"]
+            optimizer=optimizer,
+            loss="sparse_categorical_crossentropy",
+            metrics=["accuracy"],
         )
         return model
 
-    def train(self, train_dir="data/train", val_dir="data/val", epochs=50, batch_size=32):
+    def train(
+        self, train_dir="data/train", val_dir="data/val", epochs=50, batch_size=32
+    ):
         """
         Train the model using the processed dataset with early stopping and learning rate scheduling.
 
@@ -111,7 +119,9 @@ class PJMClassifier:
         X_val, y_val = self.load_data(val_dir)
 
         # Build the model
-        self.model = self.build_model(input_shape=X_train.shape[1], num_classes=len(self.classes))
+        self.model = self.build_model(
+            input_shape=X_train.shape[1], num_classes=len(self.classes)
+        )
 
         # Add early stopping (monitor val_accuracy instead of val_loss)
         early_stopping = tf.keras.callbacks.EarlyStopping(
@@ -184,14 +194,19 @@ class PJMClassifier:
             raise  # Re-raise to signal critical failure
         except Exception as e:
             print(f"Error extracting landmarks from frame: {e}")
-            return None, None  # Return None for both predicted letter and detection result
+            return (
+                None,
+                None,
+            )  # Return None for both predicted letter and detection result
 
         if not detection_result or not detection_result.hand_landmarks:
             return None, detection_result
 
         # Compute relationships directly from detection_result
         try:
-            relationships = compute_landmark_relationships(detection_result)  # Shape: (15,)
+            relationships = compute_landmark_relationships(
+                detection_result
+            )  # Shape: (15,)
             # Extract raw coordinates from the first hand for features
             hand_landmarks = detection_result.hand_landmarks[0]  # First detected hand
             raw_coordinates = np.array(
@@ -209,13 +224,17 @@ class PJMClassifier:
         # Load model if not already loaded
         if self.model is None:
             if not self.load_model():
-                raise RuntimeError("No trained model available. Please train the model first.")
+                raise RuntimeError(
+                    "No trained model available. Please train the model first."
+                )
 
         # Predict
         features = features.reshape(1, -1)  # Shape: (1, 78)
         prediction = self.model.predict(features, verbose=0)
         predicted_class_idx = np.argmax(prediction, axis=1)[0]
-        predicted_letter = self.label_encoder.inverse_transform([predicted_class_idx])[0]
+        predicted_letter = self.label_encoder.inverse_transform([predicted_class_idx])[
+            0
+        ]
 
         return predicted_letter, detection_result
 
@@ -235,7 +254,9 @@ class PJMClassifier:
         # Load model if not already loaded
         if self.model is None:
             if not self.load_model():
-                raise RuntimeError("No trained model available. Please train the model first.")
+                raise RuntimeError(
+                    "No trained model available. Please train the model first."
+                )
 
         # Evaluate
         loss, accuracy = self.model.evaluate(X_test, y_test, verbose=0)

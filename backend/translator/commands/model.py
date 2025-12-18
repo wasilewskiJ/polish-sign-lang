@@ -10,7 +10,9 @@ BATCH_SIZE: int = typer.Option(32, "--batch-size", help="Batch size for training
 
 
 @app.command()
-def train(epochs: int = EPOCHS, batch_size: int = BATCH_SIZE, verbose: bool = VERBOSE) -> None:
+def train(
+    epochs: int = EPOCHS, batch_size: int = BATCH_SIZE, verbose: bool = VERBOSE
+) -> None:
     """
     Train TensorFlow model for PJM recognition.
 

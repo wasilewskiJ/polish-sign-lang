@@ -54,7 +54,10 @@ def start() -> None:
             break
         except Exception as e:
             print(f"Error processing frame: {e}")
-            predicted_letter, detection_result = None, None  # Continue to the next frame
+            predicted_letter, detection_result = (
+                None,
+                None,
+            )  # Continue to the next frame
 
         # Draw landmarks on the frame
         if detection_result and detection_result.hand_landmarks:
@@ -69,7 +72,9 @@ def start() -> None:
             for i, hand in enumerate(detection_result.hand_landmarks):
                 print(f"Hand {i + 1}: {len(hand)} landmarks")
                 for j, point in enumerate(hand):
-                    print(f"  Landmark {j}: (x: {point.x:.2f}, y: {point.y:.2f}, z: {point.z:.2f})")
+                    print(
+                        f"  Landmark {j}: (x: {point.x:.2f}, y: {point.y:.2f}, z: {point.z:.2f})"
+                    )
             if predicted_letter:
                 print(f"Predicted PJM letter: {predicted_letter}")
         else:
@@ -83,10 +88,14 @@ def start() -> None:
         font_thickness = 2
         text_color = (0, 255, 0)  # Green
         # Calculate text size to position it in the top-right corner
-        (text_width, text_height), _ = cv2.getTextSize(text, font, font_scale, font_thickness)
+        (text_width, text_height), _ = cv2.getTextSize(
+            text, font, font_scale, font_thickness
+        )
         text_x = width - text_width - 10  # 10 pixels padding from the right edge
         text_y = 10 + text_height  # 10 pixels padding from the top edge
-        cv2.putText(frame, text, (text_x, text_y), font, font_scale, text_color, font_thickness)
+        cv2.putText(
+            frame, text, (text_x, text_y), font, font_scale, text_color, font_thickness
+        )
 
         # Display the frame with landmarks and prediction
         cv2.imshow("Webcam Feed", frame)

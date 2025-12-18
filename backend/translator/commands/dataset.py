@@ -27,7 +27,9 @@ def prepare(output: Path = OUTPUT, verbose: bool = VERBOSE) -> None:
         typer.echo(f"Starting dataset preparation, saving to {output}...")
     try:
         # Note: Adjust output directory handling if needed, as process_dataset splits into train/val/test
-        process_dataset(raw_data_dir="data/raw", output_base_dir="data", num_augmentations=8)
+        process_dataset(
+            raw_data_dir="data/raw", output_base_dir="data", num_augmentations=8
+        )
     except Exception as e:
         typer.echo(f"Error during dataset preparation: {str(e)}")
         raise typer.Exit(code=1)
