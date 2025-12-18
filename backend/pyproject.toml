@@ -1,9 +1,10 @@
 [project]
-name = "pjm2jp"
+name = "pjm"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "raczu",email = "raczu+contact@protonmail.com"}
+    {name = "Igor Wlodarczyk", email = "252253@student.pwr.edu.pl"},
+    {name = "Jakub Wasilewski", email = "jwasik2100@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.12"
